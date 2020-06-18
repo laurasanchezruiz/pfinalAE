@@ -1,7 +1,7 @@
 function fitness=test_function(A)
 %A es la matriz de adyacencia
 I=[0 0 0; 0 0 1;0 1 0;0 1 1;1 0 0;1 0 1;1 1 0;1 1 1];
-OC=[0 1 1 0 0 0 0 1];%salidas de la última puerta, output que buscamos (el correcto)
+OC=[0 0 0 1 0 1 0 1];%salidas de la última puerta, output que buscamos (el correcto)
 P=length(A)-3; %numero de elementos (puertas) que tiene el circuito (ya que tenemos 3 inputs)
 
 %output del circuito aleatorio A
@@ -46,7 +46,7 @@ end
     %también suponen mayor coste las puertas que las conexiones. Tenemos
     %que ajustar estos pesos hasta obtener nuestro óptimo.
     
-fitness=sum(abs(OC-OA))+0.001*(3*P+length(find(A)));
+fitness=(sum(abs(OC-OA)))^2+0.0001*(3*P+length(find(A)))^2;
 
 %ESTABA: fit=1*(sum(abs(OC-OA)))^2 + 0.00001*(1-sum(abs(OC-OA)))*(4*P+ length(find(A)))^2;
 % fit=1000*(sum(abs(S-V)))^2; 
