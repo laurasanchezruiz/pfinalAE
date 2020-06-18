@@ -1,25 +1,84 @@
 %%main
 clear all
 %%
-ff='test_function'
-% Creación población inicial
+ff='test_function';
+% Creación población inicial (todos los individuos con el mismo número de
+% puertas)
+
 popsize=10;
-mutrate=0.4; %si se supera, entonces llamo a la funcion mutarL
+mutrate=0.8; %si se supera, entonces llamo a la funcion mutarL
 % - No reemplazamos a todos los individuos, sólo al 60% mejores:
 selection = 0.6; % fraction of population kept
-%???? Nt=npar; % continuous parameter GA Nt=#variables
-%LLAMAR A FUNCIÓN SELECTION (después de crear la población (lin. 18)
-
- % #population memberst that survive
+%????????????????????????? Nt=npar; % continuous parameter GA Nt=#variables
 
 num_puertas=6;
-poblacion=[]
+poblacion={};
 for i=1:popsize
-    poblacion{i}=nuevo_individuo(num_puertas)
+    poblacion{i}=nuevo_individuo(num_puertas);
+end
+keep=floor(selection*popsize); % #population memberst that survive
+
+iteraciones=20;
+for a=1:iteraciones
+    disp(a)
+    poblacion_seleccionada=seleccionarL(poblacion,keep);
+
+    % Generar descendencia
+    %Aparear aleatoriamente de 2 en 2, para generar descendencia. Mantener
+    %población constante, es decir, si tengo 10 individuos y selecciono 6, de
+    %alguna manera estos 6 tendran que recombinarse entre ellos para generar 4
+    %hijos en total.
+    hijos={};
+    parents=poblacion_seleccionada;
+    num_parents=length(parents);
+    for i=1:(popsize-num_parents)
+        P1=parents{randi(num_parents)};
+        P2=parents{randi(num_parents)};
+        if P1==P2 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%WHILE
+            P2=parents{randi(num_parents)};
+        end
+        hijos{i}=recombinarL(P1,P2);
+    end
+
+    % Mutar a los hijos con probabilidad mutrate
+    hijos_mut={};
+    for i=1:length(hijos)
+        hijo=hijos{i};
+        prob=rand(1);
+        if prob<mutrate %muta
+            hijos_mut{i}=mutarL(hijo);
+        else %no muta
+            hijos_mut{i}=hijo;
+        end
+    end
+
+    % Agrupar en población a padres e hijos
+    poblacion={};
+    for i=1:length(parents)
+        poblacion{i}=parents{i};
+    end
+    for i=length(parents)+1:popsize
+        for j=1:length(hijos)
+            poblacion{i}=hijos{j};
+    end
+    end
 end
 
+% De toda la población, mirar quién tiene mayor fitness, que será el óptimo
+vector_fitnesses=[];
+for i=1:length(poblacion)
+    individuo=poblacion{i};
+    fitness=test_function(individuo);
+    vector_fitnesses(i)=fitness;
+end
 
-iteraciones=200;
-for i=1:iteraciones
-    %blablabla
+mejor_fitness=sort(vector_fitnesses,'descend'); %ordenamos de mayor a menor
+mejor_fitness=mejor_fitness(1);
+
+for i=1:length(poblacion)
+    individuo=poblacion{j};
+    fitness=test_function(individuo);
+    if mejor_fitness==fitness
+        optimo=poblacion{i}
+    end
 end

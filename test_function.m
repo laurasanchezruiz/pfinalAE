@@ -30,9 +30,25 @@ for j=1:length(I)
     end
     OA(j)=estado(end);
 end
-%fitness: comparar output bueno (OC) con el del circuito descrito por la matriz de adyacencia (OA)
-fitness=abs(OC-OA)
-%ESTA fit=1*(sum(abs(OC-OA)))^2 + 0.00001*(1-sum(abs(OC-OA)))*(4*P+ length(find(A)))^2;
+%fitness:
+    %1 - comparar output bueno (OC) con el del circuito descrito por la
+    %matriz de adyacencia (OA). Si OC=OA, su resta será un vector de 8
+    %ceros. Cuanto más se parezcan menor número de 1 y -1 dará este vector
+    %resultante de la resta OC-OA. Con "sum(abs)" lo que hacemos es sumar
+    %estos abs(1) y abs(-1) --> nos da el número de diferencias entre OC
+    %y OA.
+    %2 - coste = número de puertas (número de columnas de la matriz A) +
+    %número de conexiones (número de unos que tiene esta matriz)
+    
+    %pesos: cada uno de estos __ influye de manera diferente y esto se
+    %representa con pesos. Es mucho más importante que el output sea el
+    %correcto/se parezca más al correcto a que el coste sea mínimo, y
+    %también suponen mayor coste las puertas que las conexiones. Tenemos
+    %que ajustar estos pesos hasta obtener nuestro óptimo.
+    
+fitness=sum(abs(OC-OA))+0.001*(3*P+length(find(A)));
+
+%ESTABA: fit=1*(sum(abs(OC-OA)))^2 + 0.00001*(1-sum(abs(OC-OA)))*(4*P+ length(find(A)))^2;
 % fit=1000*(sum(abs(S-V)))^2; 
 % if fit==0
 %     fit=(E+ length(find(A)))^2;
