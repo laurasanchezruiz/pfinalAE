@@ -7,7 +7,6 @@ columnas1=length(P1(1,:));
 filas2=length(P2(:,1));
 columnas2=length(P2(1,:));
 
-
 if filas1==filas2 && columnas1==columnas2
     recombinada=zeros(filas1,columnas1);
 % mi idea pa recombinar: 

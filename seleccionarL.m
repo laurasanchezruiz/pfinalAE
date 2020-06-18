@@ -17,7 +17,7 @@ for i=1:length(poblacion)
     vector_fitnesses(i)=fitness; 
 end
 
-vector_fitnesses_ord=sort(vector_fitnesses); %ordenamos de mayor a menor
+vector_fitnesses_ord=sort(vector_fitnesses); %ordenamos de menor a mayor
 vector_fitnesses_ord=vector_fitnesses_ord(1:keep);
 
 poblacion_seleccionada={};
@@ -29,6 +29,6 @@ for i=1:length(vector_fitnesses_ord)
             poblacion_seleccionada{i}=individuo;
         end
     end
-
 end
+
 end

@@ -40,7 +40,7 @@ end
     %2 - coste = número de puertas (número de columnas de la matriz A) +
     %número de conexiones (número de unos que tiene esta matriz)
     
-    %pesos: cada uno de estos __ influye de manera diferente y esto se
+    %pesos: cada una de estas variables influye de manera diferente y esto se
     %representa con pesos. Es mucho más importante que el output sea el
     %correcto/se parezca más al correcto a que el coste sea mínimo, y
     %también suponen mayor coste las puertas que las conexiones. Tenemos

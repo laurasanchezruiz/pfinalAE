@@ -6,19 +6,19 @@ ff='test_function';
 % puertas)
 
 popsize=10;
-mutrate=0.8; %si se supera, entonces llamo a la funcion mutarL
+mutrate=0.4; %si se supera, entonces llamo a la funcion mutarL
 % - No reemplazamos a todos los individuos, sólo al 60% mejores:
 selection = 0.6; % fraction of population kept
 %????????????????????????? Nt=npar; % continuous parameter GA Nt=#variables
 
-num_puertas=6;
+max_num_puertas=6;
 poblacion={};
 for i=1:popsize
-    poblacion{i}=nuevo_individuo(num_puertas);
+    poblacion{i}=nuevo_individuo(max_num_puertas);
 end
 keep=floor(selection*popsize); % #population memberst that survive
 
-iteraciones=20;
+iteraciones=200;
 for a=1:iteraciones
     disp(a)
     poblacion_seleccionada=seleccionarL(poblacion,keep);
@@ -34,8 +34,10 @@ for a=1:iteraciones
     for i=1:(popsize-num_parents)
         P1=parents{randi(num_parents)};
         P2=parents{randi(num_parents)};
-        if P1==P2 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%WHILE
-            P2=parents{randi(num_parents)};
+        if length(P1(:,1))==length(P2(:,1)) && length(P1(1,:))==length(P2(1,:)) %tienen la misma dimensión
+            if P1==P2 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%WHILE
+                P2=parents{randi(num_parents)};
+            end
         end
         hijos{i}=recombinarL(P1,P2);
     end
@@ -72,7 +74,7 @@ for i=1:length(poblacion)
     vector_fitnesses(i)=fitness;
 end
 
-mejor_fitness=sort(vector_fitnesses,'descend'); %ordenamos de mayor a menor
+mejor_fitness=sort(vector_fitnesses); %ordenamos de menor a mayor
 mejor_fitness=mejor_fitness(1);
 
 for i=1:length(poblacion)
